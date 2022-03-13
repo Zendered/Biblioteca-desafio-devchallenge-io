@@ -58,4 +58,37 @@ describe('Create category usecase ', () => {
     const result = await repo.findAll();
     expect(result[0].id).toBe(validBook2.id);
   });
+
+  test('should find a book if the book exists', async () => {
+    const validBook:IBooksDTO = {
+      author: 'author07',
+      editor: 'editor07',
+      thumbnail: 'thumbnail07',
+      title: 'title07',
+    };
+    const findBookId = await repo.exists(validBook);
+    expect(findBookId).toBeFalsy();
+  });
+
+  test('should update a book', async () => {
+    const books: IBooksDTO[] = [];
+    const repo: IBookRepository = new BookRepository(books);
+    const usecase: CreateBook = new CreateBook(repo);
+    const oldBook:IBooksDTO = {
+      author: 'author07',
+      editor: 'editor07',
+      thumbnail: 'thumbnail07',
+      title: 'title07',
+    };
+
+    const newBook:IBooksDTO = {
+      author: 'author',
+      editor: 'editor',
+      thumbnail: 'thumbnail',
+      title: 'title',
+    };
+    await usecase.perform(oldBook);
+    await repo.update(oldBook.id, newBook);
+    expect(books[0]).toEqual(newBook);
+  });
 });
