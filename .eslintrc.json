@@ -26,8 +26,8 @@
 		"no-shadow": "off",
 		"no-console": "off",
 		"no-useless-constructor": "off",
-		"lines-between-class-members": "off",
 		"import/extensions": 0,
-		"max-len": 0
+		"max-len": 0,
+        "import/order": 0
 	}
 }
