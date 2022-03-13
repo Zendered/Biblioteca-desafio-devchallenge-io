@@ -25,10 +25,11 @@ export class BookRepository implements IBookRepository {
     return this.repo;
   }
 
-  async update(request: IBooksDTO): Promise<void> {
-    const oldBook = await this.findById(request.id);
-    await this.delete(oldBook?.id);
+  async update(id:string, request: IBooksDTO): Promise<IBooksDTO> {
+    const oldBook = await this.findById(id);
+    await this.delete(oldBook.id);
     await this.add(request);
+    return request;
   }
 
   async delete(id: string): Promise<void> {
