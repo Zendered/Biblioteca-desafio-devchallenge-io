@@ -15,7 +15,7 @@ describe('Create category usecase ', () => {
       thumbnail: 'thumbnail01',
       title: 'title01',
     };
-    const result = await (await usecase.perform(validBook)).value as Book;
+    const result = (await usecase.perform(validBook)).value as Book;
     expect(result).toEqual(validBook);
   });
 });
