@@ -6,8 +6,8 @@ import { CreateBook } from '@/domain/usecases/create-book/create-book';
 
 describe('Create category usecase ', () => {
   const books: IBooksDTO[] = [];
-  const bookRepository: IBookRepository = new BookRepository(books);
-  const usecase: CreateBook = new CreateBook(bookRepository);
+  const repo: IBookRepository = new BookRepository(books);
+  const usecase: CreateBook = new CreateBook(repo);
   test('should create a book with valid data', async () => {
     const validBook:IBooksDTO = {
       author: 'author01',
@@ -17,5 +17,45 @@ describe('Create category usecase ', () => {
     };
     const result = (await usecase.perform(validBook)).value as Book;
     expect(result).toEqual(validBook);
+  });
+
+  test('should find a book by the id', async () => {
+    const books: IBooksDTO[] = [];
+    const repo: IBookRepository = new BookRepository(books);
+    const usecase: CreateBook = new CreateBook(repo);
+    const validBook:IBooksDTO = {
+      author: 'author01',
+      editor: 'editor01',
+      thumbnail: 'thumbnail01',
+      title: 'title01',
+    };
+    (await usecase.perform(validBook)).value as Book;
+    const findBookId = await repo.findById(validBook.id);
+    expect(books[0]).toEqual(findBookId);
+  });
+
+  test('should delete a book by the id', async () => {
+    const books: IBooksDTO[] = [];
+    const repo: IBookRepository = new BookRepository(books);
+    const usecase: CreateBook = new CreateBook(repo);
+    const validBook1:IBooksDTO = {
+      author: 'author01',
+      editor: 'editor01',
+      thumbnail: 'thumbnail01',
+      title: 'title01',
+    };
+    const validBook2:IBooksDTO = {
+      author: 'author02',
+      editor: 'editor02',
+      thumbnail: 'thumbnail02',
+      title: 'title02',
+    };
+
+    (await usecase.perform(validBook1)).value as Book;
+    (await usecase.perform(validBook2)).value as Book;
+
+    await repo.delete(validBook1.id);
+    const result = await repo.findAll();
+    expect(result[0].id).toBe(validBook2.id);
   });
 });
