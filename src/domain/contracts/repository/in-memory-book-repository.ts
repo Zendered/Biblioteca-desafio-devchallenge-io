@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { IBooksDTO } from '../gateways';
 import { IBookRepository } from '../gateways/book-repository';
 
@@ -6,6 +7,10 @@ export class BookRepository implements IBookRepository {
 
   async add(request: IBooksDTO): Promise<void> {
     const exists = await this.exists(request);
+    if (!request.id) {
+      request.id = randomUUID();
+    }
+
     if (!exists) {
       this.repo.push(request);
     }
@@ -17,8 +22,7 @@ export class BookRepository implements IBookRepository {
   }
 
   async findAll(): Promise<IBooksDTO[]> {
-    const allBooks = this.repo;
-    return allBooks;
+    return this.repo;
   }
 
   async update(request: IBooksDTO): Promise<void> {
