@@ -2,8 +2,8 @@ import { randomUUID } from 'crypto';
 import { IBooksDTO } from '../gateways';
 import { IBookRepository } from '../gateways/book-repository';
 
-export class BookRepository implements IBookRepository {
-  constructor(private repo: IBooksDTO[] = []) {}
+export class InMemoryBookRepository implements IBookRepository {
+  constructor(private readonly repo: IBooksDTO[] = []) {}
 
   async add(request: IBooksDTO): Promise<void> {
     const exists = await this.exists(request);
@@ -17,7 +17,7 @@ export class BookRepository implements IBookRepository {
   }
 
   async findById(id: string): Promise<IBooksDTO | undefined> {
-    const book = await this.repo.find(book => book.id === id);
+    const book = this.repo.find(book => book.id === id);
     return book;
   }
 

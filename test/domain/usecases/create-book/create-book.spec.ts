@@ -1,12 +1,12 @@
 import { IBooksDTO } from '@/domain/contracts/gateways';
 import { IBookRepository } from '@/domain/contracts/gateways/book-repository';
-import { BookRepository } from '@/domain/contracts/repository/in-memory-book-repository';
+import { InMemoryBookRepository } from '@/domain/contracts/repository/in-memory-book-repository';
 import { Book } from '@/domain/entities';
 import { CreateBook } from '@/domain/usecases/create-book/create-book';
 
-describe('Create category usecase ', () => {
+describe('Create book usecase ', () => {
   const books: IBooksDTO[] = [];
-  const repo: IBookRepository = new BookRepository(books);
+  const repo: IBookRepository = new InMemoryBookRepository(books);
   const usecase: CreateBook = new CreateBook(repo);
   test('should create a book with valid data', async () => {
     const validBook:IBooksDTO = {

@@ -1,12 +1,12 @@
 import { IBooksDTO } from '@/domain/contracts/gateways';
 import { IBookRepository } from '@/domain/contracts/gateways/book-repository';
-import { BookRepository } from '@/domain/contracts/repository/in-memory-book-repository';
+import { InMemoryBookRepository } from '@/domain/contracts/repository/in-memory-book-repository';
 import { Book } from '@/domain/entities';
 import { CreateBook } from '@/domain/usecases/create-book/create-book';
 
 describe('Create category usecase ', () => {
   const books: IBooksDTO[] = [];
-  const repo: IBookRepository = new BookRepository(books);
+  const repo: IBookRepository = new InMemoryBookRepository(books);
   const usecase: CreateBook = new CreateBook(repo);
   test('should create a book with valid data', async () => {
     const validBook:IBooksDTO = {
@@ -21,7 +21,7 @@ describe('Create category usecase ', () => {
 
   test('should find a book by the id', async () => {
     const books: IBooksDTO[] = [];
-    const repo: IBookRepository = new BookRepository(books);
+    const repo: IBookRepository = new InMemoryBookRepository(books);
     const usecase: CreateBook = new CreateBook(repo);
     const validBook:IBooksDTO = {
       author: 'author01',
@@ -36,7 +36,7 @@ describe('Create category usecase ', () => {
 
   test('should delete a book by the id', async () => {
     const books: IBooksDTO[] = [];
-    const repo: IBookRepository = new BookRepository(books);
+    const repo: IBookRepository = new InMemoryBookRepository(books);
     const usecase: CreateBook = new CreateBook(repo);
     const validBook1:IBooksDTO = {
       author: 'author01',
@@ -72,7 +72,7 @@ describe('Create category usecase ', () => {
 
   test('should update a book', async () => {
     const books: IBooksDTO[] = [];
-    const repo: IBookRepository = new BookRepository(books);
+    const repo: IBookRepository = new InMemoryBookRepository(books);
     const usecase: CreateBook = new CreateBook(repo);
     const oldBook:IBooksDTO = {
       author: 'author07',
