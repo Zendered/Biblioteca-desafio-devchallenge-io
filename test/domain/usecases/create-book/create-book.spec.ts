@@ -19,76 +19,91 @@ describe('Create category usecase ', () => {
     expect(result).toEqual(validBook);
   });
 
-  test('should find a book by the id', async () => {
-    const books: IBooksDTO[] = [];
-    const repo: IBookRepository = new BookRepository(books);
-    const usecase: CreateBook = new CreateBook(repo);
+  test('should not add a book with invalid author', async () => {
     const validBook:IBooksDTO = {
-      author: 'author01',
+      author: 'B     ',
       editor: 'editor01',
       thumbnail: 'thumbnail01',
       title: 'title01',
     };
-    (await usecase.perform(validBook)).value as Book;
-    const findBookId = await repo.findById(validBook.id);
-    expect(books[0]).toEqual(findBookId);
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
   });
 
-  test('should delete a book by the id', async () => {
-    const books: IBooksDTO[] = [];
-    const repo: IBookRepository = new BookRepository(books);
-    const usecase: CreateBook = new CreateBook(repo);
-    const validBook1:IBooksDTO = {
-      author: 'author01',
+  test('should not add a book when author was more than 125 chars', async () => {
+    const validBook:IBooksDTO = {
+      author: 'A'.repeat(126),
       editor: 'editor01',
       thumbnail: 'thumbnail01',
       title: 'title01',
     };
-    const validBook2:IBooksDTO = {
-      author: 'author02',
-      editor: 'editor02',
-      thumbnail: 'thumbnail02',
-      title: 'title02',
-    };
-
-    (await usecase.perform(validBook1)).value as Book;
-    (await usecase.perform(validBook2)).value as Book;
-
-    await repo.delete(validBook1.id);
-    const result = await repo.findAll();
-    expect(result[0].id).toBe(validBook2.id);
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
   });
 
-  test('should find a book if the book exists', async () => {
+  test('should not add a book with invalid editor', async () => {
     const validBook:IBooksDTO = {
-      author: 'author07',
-      editor: 'editor07',
-      thumbnail: 'thumbnail07',
-      title: 'title07',
+      author: 'author01',
+      editor: 'E     ',
+      thumbnail: 'thumbnail01',
+      title: 'title01',
     };
-    const findBookId = await repo.exists(validBook);
-    expect(findBookId).toBeFalsy();
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
   });
 
-  test('should update a book', async () => {
-    const books: IBooksDTO[] = [];
-    const repo: IBookRepository = new BookRepository(books);
-    const usecase: CreateBook = new CreateBook(repo);
-    const oldBook:IBooksDTO = {
-      author: 'author07',
-      editor: 'editor07',
-      thumbnail: 'thumbnail07',
-      title: 'title07',
+  test('should not add a book when editor was more than 125 chars', async () => {
+    const validBook:IBooksDTO = {
+      author: 'author01',
+      editor: 'A'.repeat(126),
+      thumbnail: 'thumbnail01',
+      title: 'title01',
     };
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
+  });
 
-    const newBook:IBooksDTO = {
-      author: 'author',
-      editor: 'editor',
+  test('should not add a book with invalid Thumbnail', async () => {
+    const validBook:IBooksDTO = {
+      author: 'author01',
+      editor: 'editor01',
+      thumbnail: 'T     ',
+      title: 'title01',
+    };
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
+  });
+
+  test('should not add a book when thumbnail was more than 125 chars', async () => {
+    const validBook:IBooksDTO = {
+      author: 'author01',
+      editor: 'editor01',
+      thumbnail: 'A'.repeat(126),
+      title: 'title01',
+    };
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
+  });
+
+  test('should not add a book with title editor', async () => {
+    const validBook:IBooksDTO = {
+      author: 'author01',
+      editor: 'editor01',
       thumbnail: 'thumbnail',
-      title: 'title',
+      title: 'T     ',
     };
-    await usecase.perform(oldBook);
-    await repo.update(oldBook.id, newBook);
-    expect(books[0]).toEqual(newBook);
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
+  });
+
+  test('should not add a book when title was more than 125 chars', async () => {
+    const validBook:IBooksDTO = {
+      author: 'author01',
+      editor: 'editor01',
+      thumbnail: 'thumbnail',
+      title: 'A'.repeat(126),
+    };
+    const result = (await usecase.perform(validBook)).value as Error;
+    expect(result.message).toEqual('Something went wrong.');
   });
 });
