@@ -2,8 +2,6 @@ import { IBooksDTO } from '@/domain/contracts/gateways';
 import { Book } from '@/domain/entities';
 
 describe('Book entity', () => {
-  const books: IBooksDTO[] = [];
-
   test('should add a book', () => {
     const book: IBooksDTO = {
       author: 'author01',
