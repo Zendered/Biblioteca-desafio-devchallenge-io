@@ -1,8 +1,8 @@
 import { IUseCase } from '@/domain/contracts/gateways';
 import { IControllerOperation, IHttpRequest, IHttpResponse } from '../contracts';
-import { badRequest, ok } from '../helpers';
+import { ok } from '../helpers';
 
-export class ListByIdController implements IControllerOperation {
+export class ListBookController implements IControllerOperation {
   readonly requiredParams: string[] = ['id'];
 
   constructor(private readonly useCase: IUseCase) {}

@@ -1,6 +1,6 @@
 import { IHttpRequest } from '@/application/contracts';
 import { Controller } from '@/application/controllers/controller';
-import { ListByIdController } from '@/application/controllers/list-by-id';
+import { ListBookController } from '@/application/controllers/list-by-id';
 import { IBookRepository, IBooksDTO, IUseCase } from '@/domain/contracts/gateways';
 import { InMemoryBookRepository } from '@/domain/contracts/repository/in-memory-book-repository';
 import { CreateBook } from '@/domain/usecases/create-book/create-book';
@@ -12,7 +12,7 @@ describe('List book by id controller ', () => {
   const repo: IBookRepository = new InMemoryBookRepository(books);
   const createBook: IUseCase = new CreateBook(repo);
   const usecase: IUseCase = new ListBook(repo);
-  const controller = new Controller(new ListByIdController(usecase));
+  const controller = new Controller(new ListBookController(usecase));
   test('should return status code 200 when listing a book by its id', async () => {
     const request: IHttpRequest = {
       body: {
