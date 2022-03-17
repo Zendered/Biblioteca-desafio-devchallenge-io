@@ -1,6 +1,6 @@
 import { IHttpRequest } from '@/application/contracts';
 import { Controller } from '@/application/controllers/controller';
-import { ListBookController } from '@/application/controllers/list-by-id';
+import { ListBookController } from '@/application/controllers/lister-book';
 import { IBookRepository, IBooksDTO, IUseCase } from '@/domain/contracts/gateways';
 import { InMemoryBookRepository } from '@/domain/contracts/repository/in-memory-book-repository';
 import { CreateBook } from '@/domain/usecases/create-book/create-book';
